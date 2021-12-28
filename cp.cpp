@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include "dsu.h"
 // #include "SegmentTree.h"
 using namespace std;
 #define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
@@ -110,36 +111,15 @@ bool help2(vector<int> &a, vector<int> &b){
 }
 void solve(){
     int cases=1;
-    cin>>cases;    
+    // cin>>cases;    
 
     while(cases--){
-        ll n,k; cin>>n>>k;
-        std::vector<ll> v(n);
-        takeInput(v);
-        if(n == 1){
-            if(v[0] <= k) cout<<"0";
-            else cout<<v[0]-k;
-        }
-        else{
-            ll sum = accumulate(all(v) , 0l);
-            sort(all(v) , revsort);
-            int val = v[v.size()-1];
-            int k = 0;
-            int cnt = 0;
-            for (int i = 0; i < n; ++i)
-            {
-                cnt++;
-                if(i == 0 || sum - (v[i] - val) < (sum - (v[i] - (val-1)) - (i+1))){
-                    sum -= (v[i] - val);
-                }else{
-                    i--;
-                }
-                if(sum <= k) break;
-            }
-            cout<<cnt;
-
-        }
-        cout<<endl;
+        DSU dsu(5);
+        
+        dsu.makeUnion(1 , 4);
+        dsu.makeUnion(5 , 1);
+        
+        cout<<dsu.getParent(5);
     }
 }
         
