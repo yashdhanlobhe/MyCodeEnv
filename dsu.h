@@ -2,6 +2,7 @@
 using namespace std;
 
 //Disjoint Set Union
+
 class DSU
 {
 	private:

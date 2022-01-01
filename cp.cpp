@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-#include "dsu.h"
+// #include "dsu.h"
 // #include "SegmentTree.h"
 using namespace std;
 #define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
@@ -98,28 +98,36 @@ bool cmpPair(pair<ll , ll> &a, pair<ll , ll> &b) { return a.first < a.second;}
 
 int sum(int a , int b) {return a*b;}
 
-bool help(vector<int> &a, vector<int> &b){
-    if(a[0] == b[0]){
-        return a[1]>b[1];
-    }else{
-        return a[0]>b[0];
-    }
-    return false;
-}
-bool help2(vector<int> &a, vector<int> &b){
-    return a[2]<b[2];
-}
+
 void solve(){
     int cases=1;
     // cin>>cases;    
 
     while(cases--){
-        DSU dsu(5);
-        
-        dsu.makeUnion(1 , 4);
-        dsu.makeUnion(5 , 1);
-        
-        cout<<dsu.getParent(5);
+        ll sz;cin>>sz;
+        std::vector<ll> v(sz);
+        takeInput(v);
+        // cout<<*v.begin();
+        // v.sort();
+        list<int> st;
+        st.push_back(6);
+        st.push_back(4);
+        st.push_back(8);
+        reverse(st.begin(), st.end());
+        // 
+        st.sort();
+        // for(auto x : st)cout<<x;
+        multiset<int> ms;
+        ms.insert(4);
+        ms.insert(55);
+        ms.insert(4);
+        multiset<int>::iterator dif = (ms.begin());
+        for(int x : ms){
+            cout<<x;
+        }
+        // cout<<;
+        // for(auto x : ms) cout<<x<<" ";
+        // cout<<ans<<endl;
     }
 }
         
