@@ -47,6 +47,11 @@ public:
 	//Time Complexity: O(ElogE) or O(ElogV)
 	//A minimum spanning tree has (V – 1) edges where V is the number of vertices in the given graph. 
 	//Time Complexity: O(ElogE) or O(ElogV). Sorting of edges takes O(ELogE) time. After sorting, we iterate through all edges and apply the find-union algorithm. The find and union operations can take at most O(LogV) time. So overall complexity is O(ELogE + ELogV) time. The value of E can be at most O(V2), so O(LogV) is O(LogE) the same. Therefore, the overall time complexity is O(ElogE) or O(ElogV)
+    
+
+	//This is very easy we know that n-1 edges will be there which wil connect all vertex so sort all edges according to their weights
+	//and check each edge if the edge connecting two different set add it else not use DSU here which have comp. of constant 
+
     static vector<vector<int>> kruskals(vector<vector<int>> &g){
     	int sz = g.size();
     	vector<vector<int>> FinalEdges;
@@ -104,6 +109,12 @@ public:
 	//A group of edges that connects two set of vertices in a graph is called cut in graph theory. So, at every step of Prim’s algorithm, we find a cut (of two sets, one contains the vertices already included in MST and other contains rest of the vertices), pick the minimum weight 
 	//edge from the cut and include this vertex to MST Set (the set that contains already included vertices).
 	//Time Complexity of the above program is O(V^2). If the input graph is represented using adjacency list, then the time complexity of Prim’s algorithm can be reduced to O(E log V) with the help of binary heap. Please see Prim’s MST for Adjacency List Representation for more details. 
+	
+
+
+	//This is also greddy same as the dikstraw each time take the minimum not visited vetex and each time asign value to vertex the minimum 
+	// from the all visited vertex for that each time mark the cur vertex as visited and check all there edges and update the edges which are 
+	//lesser than current vertex distance other wise leave as it is
 	static vector<int> prims(vector<vector<int>> &g){
 		int sz = g.size();
 		std::vector<int> parent(sz , -1);

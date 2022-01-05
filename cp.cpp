@@ -1,6 +1,5 @@
 #include<bits/stdc++.h>
 // #include "shortestPath.h"
-#include "mst.h"
 // #include "SegmentTree.h"
 using namespace std;
 #define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
@@ -97,28 +96,35 @@ template <class T> void printVector(vector<T> &v){ for(int i = 0 ; i < v.size() 
 
 bool cmpPair(pair<ll , ll> &a, pair<ll , ll> &b) { return a.first < a.second;}
 
-int sum(int a , int b) {return a*b;}
 
-bool help(vector<ll> &a , vector<ll> &b){
-	ll s1 = a[0] - a[1];
-	ll s2 = b[0] - b[1];
-	if(s1 != s2) return s1<s2;
-	if(a[0] != b[0]) return a[0]<b[0];
-	return a[1]<b[1];
-}
-
+ 
 void solve(){
     int cases=1;
     // cin>>cases;    
 
     while(cases--){
-    	std::vector<vector<int>> v = {{0,100,1 ,5},
-                                      {100 , 0 , 5 , INT_MAX},
-                                      {1 , 5 , 0 , INT_MAX} , 
-                                      {5 , INT_MAX , INT_MAX , 0}};
-    	MST mst;
-    	auto x = mst.kruskals(v);
-    	debug(x);
+        ll n;
+        cin>>n;
+        vector<ll> v(n);
+        takeInput(v);
+        std::vector<ll> ans(n);
+        for (int i = n-1; i >= 0; i--)
+        {
+            ll mm = 0;
+            for (int j = i+1; j < n; j++)
+            {
+                   if(v[j]%v[i] == 0)
+                   mm = max(mm , ans[j]);
+            }
+            ans[i] = v[i]+mm;
+        }
+        debug(ans);
+        ll r = 0;
+        for (int i = 0; i < n; ++i)
+        {
+            r = max(ans[i] , r);
+        }
+        cout<<r;
     }
 }
         

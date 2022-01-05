@@ -2,7 +2,9 @@
 using namespace std;
 
 //Disjoint Set Union
-
+//The two techniques complement each other. The time complexity of each
+//operation becomes even smaller than O(Logn).
+//In fact, amortized time complexity effectively becomes small constant. 
 class DSU
 {
 	private:
