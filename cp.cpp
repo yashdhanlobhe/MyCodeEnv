@@ -1,6 +1,4 @@
-#include<bits/stdc++.h>
-// #include "shortestPath.h"
-// #include "SegmentTree.h"
+#include <bits/stdc++.h>
 using namespace std;
 #define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
 #define MOD 1000000007
@@ -94,37 +92,41 @@ template <class T> void printVector(vector<T> &v){ for(int i = 0 ; i < v.size() 
 
 //---------->>>Start Program<<<-------------//
 
-bool cmpPair(pair<ll , ll> &a, pair<ll , ll> &b) { return a.first < a.second;}
+int rand50(){
+    return rand()&1;
+}
+int rand75(){
+    return rand50()|rand50();
+}
+
+class compareClass{
+public:
+    bool operator()(int a , int b){
+        return a > b;
+    }
+};
+
+struct compareStruct{
+    bool operator()(int a , int b){
+        return a > b;
+    }  
+};
 
 
- 
+bool compare(int a , int b){
+    return  a < b;
+}
+
+
+#include "bridges.h"
+
 void solve(){
-    int cases=1;
+    int cases=1;    
     // cin>>cases;    
-
     while(cases--){
-        ll n;
-        cin>>n;
-        vector<ll> v(n);
-        takeInput(v);
-        std::vector<ll> ans(n);
-        for (int i = n-1; i >= 0; i--)
-        {
-            ll mm = 0;
-            for (int j = i+1; j < n; j++)
-            {
-                   if(v[j]%v[i] == 0)
-                   mm = max(mm , ans[j]);
-            }
-            ans[i] = v[i]+mm;
-        }
-        debug(ans);
-        ll r = 0;
-        for (int i = 0; i < n; ++i)
-        {
-            r = max(ans[i] , r);
-        }
-        cout<<r;
+        Bridge  bridge;
+        vector<vector<int>> graph = {{1 , 2 , 4},{0 , 2},{1 ,0 ,3},{2} , {0}};        
+        debug(bridge.getBridges(graph));
     }
 }
         
