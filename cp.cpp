@@ -117,17 +117,15 @@ bool compare(int a , int b){
     return  a < b;
 }
 
-
-#include "bridges.h"
+#include "grayCode.h"
 
 void solve(){
     int cases=1;    
     // cin>>cases;    
     while(cases--){
-        Bridge  bridge;
-        vector<vector<int>> graph = {{1 , 2 , 4},{0 , 2},{1 ,0 ,3},{2} , {0}};        
-        debug(bridge.getBridges(graph));
-    }
+        GrayCode grayCode;
+        debug(grayCode.getGrayCodeVector(5));
+    }   
 }
         
 int main() {
