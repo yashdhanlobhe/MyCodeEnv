@@ -117,14 +117,14 @@ bool compare(int a , int b){
     return  a < b;
 }
 
-#include "grayCode.h"
+#include "prime.h"
 
 void solve(){
     int cases=1;    
     // cin>>cases;    
     while(cases--){
-        GrayCode grayCode;
-        debug(grayCode.getGrayCodeVector(5));
+        Prime p(97);
+        cout<<p.isPrime(97);
     }   
 }
         
