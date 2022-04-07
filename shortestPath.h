@@ -129,13 +129,17 @@ public:
 				dist[i][j] = g[i][j];
 			}
 		}
-
-		for (int i = 0; i < g.size(); ++i)
+		//dont change the for loop order
+		//each time we are checking can k is middle between of i and j shortest path
+		for (int k = 0; k < g.size(); ++k)
 		{
 			for (int j = 0; j < g.size(); ++j)
 			{
-				for (int k = 0; k < g.size(); ++k)
+				for (int i = 0; i < g.size(); ++i)
 				{
+					//If vertex k is on the shortest path from
+	                // i to j, then update the value of
+	                // dist[i][j]
 					if(i == j){
 						dist[i][j] = 0;
 						continue;

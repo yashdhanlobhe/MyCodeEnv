@@ -71,10 +71,10 @@ ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) %
 ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}  //only for prime m
 ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (ll i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 
-long long binpowMOD(long long a, long long b) { a %= 1000000007; long long res = 1; while (b > 0) { if (b & 1) res = res * a % 1000000007; a = a * a % 1000000007;b >>= 1;}return res;}
+long long binpowMOD(long long a, long long b) { a %= 998244353; long long res = 1; while (b > 0) { if (b & 1) res = res * a %998244353 ; a = a * a %998244353;b >>= 1;}return res;}
 void primeFact(vector<ll> &ans, ll n ){for (int i = 2; i*i <= n; ++i){  while(n%i == 0){ ans.pb(i); n/=i; }}if(n>1) ans.push_back(n);}
 template <class T> void takeInput(vector<T> &v){ for(int i = 0 ; i < v.size() ; i++) cin>>v[i];};
-template <class T> void printVector(vector<T> &v){ for(int i = 0 ; i < v.size() ; i++) cout<<v[i];};
+template <class T> void printVector(vector<T> &v){ for(int i = 0 ; i < v.size() ; i++) cout<<v[i]<<" ";};
 
 // ll dpForNcr[10000][10000];
 //Initialise array elements with zero
@@ -99,12 +99,7 @@ int rand75(){
     return rand50()|rand50();
 }
 
-class compareClass{
-public:
-    bool operator()(int a , int b){
-        return a > b;
-    }
-};
+
 
 struct compareStruct{
     bool operator()(int a , int b){
@@ -117,24 +112,119 @@ bool compare(int a , int b){
     return  a < b;
 }
 
-#include "prime.h"
 
-void solve(){
-    int cases=1;    
-    // cin>>cases;    
-    while(cases--){
-        Prime p(97);
-        cout<<p.isPrime(97);
-    }   
-}
+// vector<ll> lis(vector<ll> v){
+//     if(v.size() == 0) return {};
+//     vector<ll> lis = {v[0]};
+
+//     for(ll i = 1 ; i < v.size() ; i++){
+//         ll cur = v[i];
+//         auto idx = upper_bound(lis.begin() , lis.end() , cur);
         
+
+//                 if(idx == lis.end()){
+//                     lis.push_back(cur);
+//                 }else{
+//                     *idx = cur;
+//                 }
+//     }
+//     debug(lis);
+//     return lis;
+
+// }
+
+
+
+
+class compareClass{
+public:
+    bool operator()(pair<ll , ll> &p1 , pair<ll , ll> &p2){
+        ll b1 = p1.first;
+        ll c1 = p1.second;
+        ll b2 = p2.first;
+        ll c2 = p2.second;
+        return (double)c1/(double)b1 < (double)c2/(double)b2;
+    }
+};
+
+
+ll getSumDivisors(ll n , ll x)
+{
+    ll ans = 0;
+    for (ll i=1; i<=sqrt(n); i++)
+    {
+        if (n%i == 0)
+        {
+            if (n/i == i)
+                ans += i;
+            
+            else 
+                ans += (i + n/i);
+        }
+        if(ans > x) return INT_MAX;
+    }
+    return ans;
+}
+
+int mod = 998244353;
+
+
+ 
+bool cmp(vector<ll> &a , vector<ll> &b){
+    return (a[1]*1.0)/(a[0]*a[2]*1.0) > (b[1]*1.0)/(b[0]*b[2]*1.0); 
+}
+
+
+
+// #include "stringfunctions.h"
+
+
+void solve(ll caseNum){
+    ll sz; cin>>sz;
+    string s; cin>>s;
+    // cout<<s;
+    int one = 0;
+    for(auto x : s){
+        if(x == '1') one++; 
+    }
+
+    if(one == 0) {
+        cout<<"0"<<endl;
+        return;
+    }
+    // cout<<s.length();
+    for(int i = 1; i < s.length(); i++){
+        // cout<<s[i];
+        if(s[i] == s[i-1] && s[i] == '1') {
+            cout<<"2"<<endl;
+            return;
+        } 
+    } 
+    cout<<"1"<<endl;
+}   
+
+
+void precompute(int &cases){
+     cin>>cases;
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #ifndef ONLINE_JUDGE
     freopen("Error.txt", "w", stderr);
 #endif
-    solve();
+    int cases=1;       
+    precompute(cases);
+
+    int total = cases;
+    // cout<<total;
+
+    while(cases--){
+
+        solve(total-cases);
+    }  
+    
     return 0;
 }
     
