@@ -7,7 +7,7 @@ using namespace std;
 #define nline "\n"
 #define pb push_back
 #define ppb pop_back
-#define mp make_pair
+// #define mp make_pair
 #define ff first
 #define ss second
 #define PI 3.141592653589793238462
@@ -148,64 +148,251 @@ public:
 };
 
 
-ll getSumDivisors(ll n , ll x)
-{
-    ll ans = 0;
-    for (ll i=1; i<=sqrt(n); i++)
-    {
-        if (n%i == 0)
-        {
-            if (n/i == i)
-                ans += i;
+// ll getSumDivisors(ll n )
+// {
+//     ll ans = 0;
+//     for (ll i=1; i<=sqrt(n); i++)
+//     {
+//         if (n%i == 0)
+//         {
+//             if (n/i == i)
+//                 ans += i;
             
-            else 
-                ans += (i + n/i);
-        }
-        if(ans > x) return INT_MAX;
-    }
-    return ans;
-}
+//             else 
+//                 ans += (i + n/i);
+//         }
+//         // if(ans > x) return INT_MAX;
+//     }
+//     return ans;
+// }
+
+// void getDivisors(ll n)
+// {
+//     ll ans = 0;
+//     for (ll i=1; i<=sqrt(n); i++)
+//     {
+//         if (n%i == 0)
+//         {
+//             // cout<<i<<" ";
+//            string temp = to_string(i);
+//            pali(temp);
+//            temp = to_string(n/i);
+//            pali(temp);
+//         }
+//     }
+    
+//     return;
+// }
+
+
 
 int mod = 998244353;
 
 
+ 
  
 bool cmp(vector<ll> &a , vector<ll> &b){
     return (a[1]*1.0)/(a[0]*a[2]*1.0) > (b[1]*1.0)/(b[0]*b[2]*1.0); 
 }
 
 
+ll fact(ll x)
+{
+    if (x == 0)
+        return 1;
+    return x * fact(x - 1);
+}
 
-// #include "stringfunctions.h"
+
+
+ll nmod(ll &a , ll &n){
+    return a - n * floor((a*1.0)/(1.0*n));
+}
+
+ll amod(ll n, ll mod){
+    if(n >= 0) return n%mod;
+    return nmod(n , mod);
+} 
+ 
+
+vector<int>pre; 
+vector<int>after;
+vector<vector<int>> tree;
+int n,e;
+
+int help(vector<bool> &vis , int cur){
+    if(vis[cur]) return 0;
+    vis[cur] = true;
+    int ans = 0;
+    for(auto x : tree[cur]){
+        ans += help(vis , x);
+        if(pre[cur] != after[cur]) ans++;
+    }
+
+    vis[cur] = false;
+    return ans;
+}
+
+void getPrevBig(vector<int> &prev , vector<int> &v){
+    stack<int> st;
+    for (int i = 0; i < v.size(); ++i)
+    {
+        while(!st.empty() && v[st.top()] <= v[i]){
+            st.pop();
+        }
+        if(!st.empty()) prev[i]= st.top();
+        st.push(i);
+    }
+}
+void getNextBig(vector<int> &prev , vector<int> &v){
+    stack<int> st;
+    for (int i = v.size()-1; i >= 0; --i)
+    {
+        while(!st.empty() && v[st.top()] <= v[i]){
+            st.pop();
+        }
+        if(!st.empty()) prev[i]= st.top();
+        else prev[i] = v.size()-1;
+        st.push(i);
+    }
+}
+
+
+class SGTree {
+public:
+        vector<int> seg;
+
+    SGTree(int n) {
+        seg.resize(4 * n + 1);
+    }
+
+    void build(int ind, int low, int high, vector<int>arr) {
+        if (low == high) {
+            seg[ind] = arr[low];
+            return;
+        }
+
+        int mid = (low + high) / 2;
+        build(2 * ind + 1, low, mid, arr);
+        build(2 * ind + 2, mid + 1, high, arr);
+        int l = seg[2 * ind + 1];
+        int r = seg[2 * ind + 2];
+        seg[ind] = max(l , (l + r));
+    }
+
+    int query(int ind, int low, int high, int l, int r) {
+        // no overlap
+        // l r low high or low high l r
+        if (r < low || high < l) return INT_MIN;
+
+        // complete overlap
+        // [l low high r]
+        if (low >= l && high <= r) return seg[ind];
+
+        int mid = (low + high) >> 1;
+        int left = query(2 * ind + 1, low, mid, l, r);
+        int right = query(2 * ind + 2, mid + 1, high, l, r);
+        return max(l, l+r);
+    }
+};
+
+
+class Solution {
+public:
+    int mod = 1e9 + 7;
+    vector<int> getPre(vector<int>& v){
+        vector<int> ans;
+        ans.push_back(v[0]);
+        for(int i = 1 ; i < v.size() ; i++){
+            ans.push_back((ans[i-1] + v[i]));
+        }
+        return ans;
+    }
+    vector<int> getPre2(vector<int>& v){
+        vector<int> ans;
+        ans.push_back(0);
+        for(int i = 0 ; i < v.size() ; i++){
+            ans.push_back((ans[i] + v[i]));
+        }
+        return ans;
+    }
+    vector<int> getLeft(vector<int> &v){
+        vector<int> ans(v.size() , 0);
+        stack<int> st;
+        for (int i = 0; i < v.size(); ++i)
+        {
+            while(!st.empty() && v[st.top()] > v[i]){
+                st.pop();
+            }
+            if(!st.empty()) ans[i] = st.top()+1; 
+            st.push(i);
+        }
+        return ans;
+    }
+
+    vector<int> getRight(vector<int> &v){
+        vector<int> ans(v.size() , v.size()-1);
+        stack<int> st;
+        for (int i = v.size()-1; i >= 0; --i)
+        {
+            while(!st.empty() && v[st.top()] > v[i]){
+                st.pop();
+            }
+            if(!st.empty()) ans[i] = st.top()-1; 
+            st.push(i);
+        }
+        return ans;
+    }
+
+
+    int totalStrength(vector<int>& v) {
+        vector<int> prefix = getPre(v);
+        debug(prefix);
+        vector<int> sos = getPre2(prefix);
+        debug(sos);
+        // for(auto x : prefix) cout<<x<<" ";
+        auto l = getLeft(v);
+        debug(l);
+        auto r = getRight(v);
+        debug(r);
+        int ans = 0;
+
+        for (int i = 0; i < v.size(); ++i)
+        {
+            int cur = v[i];
+            int left = l[i];
+            int right = r[i];
+            // debug(i);
+            if(left == right) {
+                ans += (v[left]*v[left]);
+            }else{
+                // debug(left);
+                int rNum = r[i]-i+1;
+                int lNum = i-l[i]+1;
+                // debug(rNum);
+                // debug(lNum);
+                ans+=rNum*(sos[right+1] - sos[i]);
+                ans-=lNum*(sos[i+1] - sos[left]);
+            }
+
+        }
+        return ans;
+    }
+};
+
 
 
 void solve(ll caseNum){
-    ll sz; cin>>sz;
-    string s; cin>>s;
-    // cout<<s;
-    int one = 0;
-    for(auto x : s){
-        if(x == '1') one++; 
-    }
-
-    if(one == 0) {
-        cout<<"0"<<endl;
-        return;
-    }
-    // cout<<s.length();
-    for(int i = 1; i < s.length(); i++){
-        // cout<<s[i];
-        if(s[i] == s[i-1] && s[i] == '1') {
-            cout<<"2"<<endl;
-            return;
-        } 
-    } 
-    cout<<"1"<<endl;
+    vector<int> v(8);
+    takeInput(v);
+    debug(v);
+    Solution* sp= new Solution();
+    cout<<(sp->totalStrength(v));
 }   
 
 
 void precompute(int &cases){
-     cin>>cases;
+     // cin>>cases;    
 }
 
 int main() {
@@ -228,3 +415,16 @@ int main() {
     return 0;
 }
     
+//APPROACHING A QUESTION
+//+ Do dry run
+//+ Think of binary search (max of min etc also if n<=2*10^5)
+//+ Think of common dp states (Even if it appears as maths but constraints are small)
+//+ Check constraints
+//+ Keep calm and enjoy the question
+//+ Be sure to remove MOD from binpow (if needed)
+//+ Try bidirectional analysis for constructive questions
+//+ If given some sequence try thinking of prefix sums
+//+ If constraints are too large maybe its simple maths
+//+ In questions with binary operations think of bits independently and also the change pattern
+//+ If two or more binary operations are given mostly there is a relation between them and an arithmatic operator
+//+ If it is getting complicated and unable to solve for 1/2 hour change the approch think differently
