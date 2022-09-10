@@ -93,6 +93,8 @@ public:
 
 		return ans;
 	}
+
+	
 	vector<int> getArticulationPoints(vector<vector<int>> &graph){
 		ansPoint.clear();
 		vector<int> lowerMin(graph.size() , -1) , normalMin(graph.size() , -1);

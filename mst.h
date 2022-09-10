@@ -128,7 +128,7 @@ public:
 		{
 			int u = findMinKey(keys , vis);
 			vis[u] = true;
-			cout<<u;
+			// cout<<u;
 			for (int v = 0; v < sz; ++v)
 			{
 				if(u == v || g[u][v] == INT_MAX || vis[v]) continue;

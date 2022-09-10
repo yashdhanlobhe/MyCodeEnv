@@ -9,7 +9,8 @@ class StringFunctions{
 	//https://www.youtube.com/watch?v=CpZh4eF8QBw&ab_channel=TusharRoy-CodingMadeSimple
 	
 	//we can also find the kmp algo using this below implementation
-	static vector<long long> zfunction(string &s){
+	
+    static vector<long long> zfunction(string &s){
         int sz = s.length();
         
         vector<long long> ans(sz);
@@ -56,6 +57,7 @@ class StringFunctions{
         return ans;
     }
 
+    
     static vector<int> kmpAlgo(string &s , string &pattern){
     	string temp = pattern + "$" + s;
     	auto x = zfunction(temp);

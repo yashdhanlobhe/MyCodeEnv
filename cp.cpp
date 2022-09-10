@@ -1,5 +1,9 @@
 #include <bits/stdc++.h>
+
+
 using namespace std;
+
+
 #define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
 #define MOD 1000000007
 #define MOD1 998244353
@@ -15,7 +19,7 @@ using namespace std;
 #define sz(x) ((int)(x).size())
 #define all(x) (x).begin(), (x).end()
 
-typedef long long ll;
+typedef int ll;
 typedef unsigned long long ull;
 typedef long double lld;
  
@@ -26,8 +30,8 @@ typedef long double lld;
 #define debug(x)
 #endif
  
-void _print(ll t) {cerr << t;}
-void _print(int t) {cerr << t;}
+// void _print(ll t) {cerr << t;}
+// void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
 void _print(char t) {cerr << t;}
 void _print(lld t) {cerr << t;}
@@ -71,7 +75,7 @@ ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) %
 ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}  //only for prime m
 ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (ll i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 
-long long binpowMOD(long long a, long long b) { a %= 998244353; long long res = 1; while (b > 0) { if (b & 1) res = res * a %998244353 ; a = a * a %998244353;b >>= 1;}return res;}
+// long long binpowMOD(long long a, long long b) { a %= 1000000007; long long res = 1; while (b > 0) { if (b & 1) res = res * a %1000000007 ; a = a * a %1000000007;b >>= 1;}return res;}
 void primeFact(vector<ll> &ans, ll n ){for (int i = 2; i*i <= n; ++i){  while(n%i == 0){ ans.pb(i); n/=i; }}if(n>1) ans.push_back(n);}
 template <class T> void takeInput(vector<T> &v){ for(int i = 0 ; i < v.size() ; i++) cin>>v[i];};
 template <class T> void printVector(vector<T> &v){ for(int i = 0 ; i < v.size() ; i++) cout<<v[i]<<" ";};
@@ -136,16 +140,6 @@ bool compare(int a , int b){
 
 
 
-class compareClass{
-public:
-    bool operator()(pair<ll , ll> &p1 , pair<ll , ll> &p2){
-        ll b1 = p1.first;
-        ll c1 = p1.second;
-        ll b2 = p2.first;
-        ll c2 = p2.second;
-        return (double)c1/(double)b1 < (double)c2/(double)b2;
-    }
-};
 
 
 // ll getSumDivisors(ll n )
@@ -186,14 +180,7 @@ public:
 
 
 
-int mod = 998244353;
 
-
- 
- 
-bool cmp(vector<ll> &a , vector<ll> &b){
-    return (a[1]*1.0)/(a[0]*a[2]*1.0) > (b[1]*1.0)/(b[0]*b[2]*1.0); 
-}
 
 
 ll fact(ll x)
@@ -213,189 +200,114 @@ ll amod(ll n, ll mod){
     if(n >= 0) return n%mod;
     return nmod(n , mod);
 } 
- 
 
-vector<int>pre; 
-vector<int>after;
-vector<vector<int>> tree;
-int n,e;
-
-int help(vector<bool> &vis , int cur){
-    if(vis[cur]) return 0;
-    vis[cur] = true;
-    int ans = 0;
-    for(auto x : tree[cur]){
-        ans += help(vis , x);
-        if(pre[cur] != after[cur]) ans++;
-    }
-
-    vis[cur] = false;
-    return ans;
-}
-
-void getPrevBig(vector<int> &prev , vector<int> &v){
-    stack<int> st;
-    for (int i = 0; i < v.size(); ++i)
+void printBin(int n){
+    for (int i = 31; i >= 0; --i)
     {
-        while(!st.empty() && v[st.top()] <= v[i]){
-            st.pop();
+        if(((1<<i)&n)){
+            cout<<1;
+        }else{
+            cout<<0;
         }
-        if(!st.empty()) prev[i]= st.top();
-        st.push(i);
     }
-}
-void getNextBig(vector<int> &prev , vector<int> &v){
-    stack<int> st;
-    for (int i = v.size()-1; i >= 0; --i)
-    {
-        while(!st.empty() && v[st.top()] <= v[i]){
-            st.pop();
-        }
-        if(!st.empty()) prev[i]= st.top();
-        else prev[i] = v.size()-1;
-        st.push(i);
-    }
+    cout<<endl;
 }
 
 
-class SGTree {
+class compareClass{
 public:
-        vector<int> seg;
-
-    SGTree(int n) {
-        seg.resize(4 * n + 1);
-    }
-
-    void build(int ind, int low, int high, vector<int>arr) {
-        if (low == high) {
-            seg[ind] = arr[low];
-            return;
-        }
-
-        int mid = (low + high) / 2;
-        build(2 * ind + 1, low, mid, arr);
-        build(2 * ind + 2, mid + 1, high, arr);
-        int l = seg[2 * ind + 1];
-        int r = seg[2 * ind + 2];
-        seg[ind] = max(l , (l + r));
-    }
-
-    int query(int ind, int low, int high, int l, int r) {
-        // no overlap
-        // l r low high or low high l r
-        if (r < low || high < l) return INT_MIN;
-
-        // complete overlap
-        // [l low high r]
-        if (low >= l && high <= r) return seg[ind];
-
-        int mid = (low + high) >> 1;
-        int left = query(2 * ind + 1, low, mid, l, r);
-        int right = query(2 * ind + 2, mid + 1, high, l, r);
-        return max(l, l+r);
+    bool operator()(int &p1 , int &p2){
+        if(p1%2 != 0 && p2%2 == 0) return true;
+        return false; 
     }
 };
 
 
-class Solution {
-public:
-    int mod = 1e9 + 7;
-    vector<int> getPre(vector<int>& v){
-        vector<int> ans;
-        ans.push_back(v[0]);
-        for(int i = 1 ; i < v.size() ; i++){
-            ans.push_back((ans[i-1] + v[i]));
-        }
-        return ans;
-    }
-    vector<int> getPre2(vector<int>& v){
-        vector<int> ans;
-        ans.push_back(0);
-        for(int i = 0 ; i < v.size() ; i++){
-            ans.push_back((ans[i] + v[i]));
-        }
-        return ans;
-    }
-    vector<int> getLeft(vector<int> &v){
-        vector<int> ans(v.size() , 0);
-        stack<int> st;
-        for (int i = 0; i < v.size(); ++i)
-        {
-            while(!st.empty() && v[st.top()] > v[i]){
-                st.pop();
-            }
-            if(!st.empty()) ans[i] = st.top()+1; 
-            st.push(i);
-        }
-        return ans;
-    }
 
-    vector<int> getRight(vector<int> &v){
-        vector<int> ans(v.size() , v.size()-1);
-        stack<int> st;
-        for (int i = v.size()-1; i >= 0; --i)
-        {
-            while(!st.empty() && v[st.top()] > v[i]){
-                st.pop();
-            }
-            if(!st.empty()) ans[i] = st.top()-1; 
-            st.push(i);
-        }
-        return ans;
-    }
-
-
-    int totalStrength(vector<int>& v) {
-        vector<int> prefix = getPre(v);
-        debug(prefix);
-        vector<int> sos = getPre2(prefix);
-        debug(sos);
-        // for(auto x : prefix) cout<<x<<" ";
-        auto l = getLeft(v);
-        debug(l);
-        auto r = getRight(v);
-        debug(r);
-        int ans = 0;
-
-        for (int i = 0; i < v.size(); ++i)
-        {
-            int cur = v[i];
-            int left = l[i];
-            int right = r[i];
-            // debug(i);
-            if(left == right) {
-                ans += (v[left]*v[left]);
-            }else{
-                // debug(left);
-                int rNum = r[i]-i+1;
-                int lNum = i-l[i]+1;
-                // debug(rNum);
-                // debug(lNum);
-                ans+=rNum*(sos[right+1] - sos[i]);
-                ans-=lNum*(sos[i+1] - sos[left]);
-            }
-
-        }
-        return ans;
+struct cmpStruct{
+    bool operator () (const int &a , const int &b) const {
+        return a > b;
     }
 };
 
+
+class cmpClass{
+public:
+    bool operator () (const int &a , const int &b) const {
+         return a > b;
+    }
+};
+
+
+
+long long binpowMOD(long long a, long long b) { a %= 1000000007; long long res = 1; while (b > 0) { if (b & 1) res = res * a %1000000007 ; a = a * a %1000000007;b >>= 1;} return res;}
+
+
+
+vector<ll> val;
+string s;
+ll n;
+bool check(ll a , ll b , ll m , ll n){
+    if(a == -1 && b == -1) return true;
+    while(a <= b && m <= n){
+        if(s[a] < s[m]) return true;
+        if(s[a] > s[m]) return false;
+        a++;
+        m++;
+    }
+    if(a > b && m > n) return false;
+    if(a > b) return true;
+    return false;
+
+}
+
+map<vector<ll> , ll> mp;
+
+ll help(ll idx , ll prevStart , ll prevEnd){
+    if(idx >= n) return 0;
+    if(mp.find({idx , prevStart, prevEnd}) != mp.end()) return mp[{idx , prevStart, prevEnd}];
+    
+    ll ans = 0;
+    ans = max(ans , help(idx  + 1 , prevStart , prevEnd));
+
+    for (ll i = 0; i < n-idx; ++i)
+    {
+        if(lexicographical_compare(&s + prevStart , &s + prevEnd , &s + idx , &s + i) > 0)
+        {
+            ans = max(ans , help(idx + i + 1 , idx , idx + i) + val[i]);
+        }   
+    }
+    
+    // cout<<idx<<ans<<prevStart<<prevEnd<<endl;
+    return mp[{idx , prevStart, prevEnd}] = ans;
+}
 
 
 void solve(ll caseNum){
-    vector<int> v(8);
-    takeInput(v);
-    debug(v);
-    Solution* sp= new Solution();
-    cout<<(sp->totalStrength(v));
-}   
+    cin>>n>>s;
+    val.clear();
+    for (int i = 0; i < n; ++i)
+    {
+        ll temp;
+        cin>>temp;
+        val.push_back(temp);
+    }
+    mp.clear();
+    // d/ebug(val);
+    cout<<help(0 , -1 , -1)<<endl;
+}
+
+
+
 
 
 void precompute(int &cases){
-     // cin>>cases;    
+     cin>>cases;    
 }
 
 int main() {
+
+    // solve(1);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #ifndef ONLINE_JUDGE
@@ -408,7 +320,6 @@ int main() {
     // cout<<total;
 
     while(cases--){
-
         solve(total-cases);
     }  
     
@@ -428,3 +339,11 @@ int main() {
 //+ In questions with binary operations think of bits independently and also the change pattern
 //+ If two or more binary operations are given mostly there is a relation between them and an arithmatic operator
 //+ If it is getting complicated and unable to solve for 1/2 hour change the approch think differently
+//+ If i will convert int to unsigned int and do work it will not overflow and i can again convert it into int
+//+ How we subtract two number find twos completment and add 1 to it
+//+ ~ is used to toggle all the bits in  number
+//+ -1          =  11111111111111111111111111111111
+//  -2147483648 =  10000000000000000000000000000000
+//+ don't write direct function call in max or min
+//+ negative mod if want to 0 - 1 and have %4 u can do (x + mod)%mod to make it positve
+
